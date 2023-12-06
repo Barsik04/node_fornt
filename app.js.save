@@ -57,7 +57,8 @@ app.get('/send-get-request', async (req, res) => {
   try {
    
     const { value } = req.query;
-    const response = await axios.get(`http:5000/check_authorization?id=${value}`);
+    const fixValue = encodeURIComponent(value);
+    const response = await axios.get(`http://python_app:5000/check_authorization?id=${fixValue}`);
     const responsedata = response.data;
 
     if (responsedata.status == "Доступ разрешен")
