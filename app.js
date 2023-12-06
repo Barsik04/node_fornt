@@ -1,0 +1,85 @@
+const express = require('express');
+const axios = require('axios');
+const app = express();
+const port = 3000;
+const path = require('path');
+const { name } = require('ejs');
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.set('view engine', 'ejs');
+app.use(express.urlencoded({ extended: true }));
+
+// Главная страница
+app.get('/', (req, res) => {
+  res.render('index');
+});
+
+// Страница для отправки запроса создания
+app.get('/create', (req, res) => {
+  res.render('create');
+});
+
+// Страница для отправки запроса проверки
+app.post('/create', async (req, res) => {
+  try {
+  
+    const response = await axios.post('http://python_app:5000/create_user', req.body);
+    
+    const responseData = response.data; 
+    if (responseData.id != undefined){
+      const id = responseData.id
+      const name =  req.body.name;
+      const second_name =  req.body.second_name;
+      const surname = req.body.surname;
+      res.render('create', { success: true, name, second_name, surname, id});
+    }
+    else
+    {
+      const message = responseData.message;
+      res.render('create', { success: false, message});
+    }
+    
+    
+  } catch (error) {
+    const erout =  error.message;
+    console.log(`Error -  ${erout}`);
+    console.log(`Server is running on port ${error}`); 
+    res.render('create', { success: false, erout });
+  }
+});
+
+// Страница для отправки запроса проверки
+app.get('/check', (req, res) => {
+  res.render('check');
+});
+
+// Обработка GET запроса и отправка данных на другой сервер
+app.get('/send-get-request', async (req, res) => {
+  try {
+   
+    const { value } = req.query;
+    const response = await axios.get(`http://python_app:5000/check_authorization?id=${value}`);
+    const responsedata = response.data;
+
+    if (responsedata.status == "Доступ разрешен")
+    {
+      succes = responsedata.status;
+      res.render('check', { result: true, succes });
+
+    }
+    else{
+      succes = responsedata.status;
+      res.render('check', { result: false, succes });
+    }
+    
+  } catch (error) {
+    error =  error.message;
+    console.log(`Server is running on port ${error}`); 
+    res.render('check', { success: false, error});
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});

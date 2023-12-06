@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Создать пользователя</title>
+  <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+  <h1>Создать пользователя</h1>
+  <% if (typeof success !== 'undefined') { %>
+    <% if (success) { %>
+      <p class="special-output-good">Пользователь <%= surname %> <%= name %> <%= second_name %>  успешно создан!</p>
+      <p class="special-output-good">ID RFID метки = <%= id %></p>
+      <% } else { %>
+      <p class="special-output-bad">Произошла ошибка: <%= erout %></p>
+    <% } %>
+  <% } %>
+  <form action="/create" method="POST">
+    Фамилия<input type="text" name="surname" placeholder="Иванов" required id="id"><br>
+    Имя<input type="text" name="name" placeholder="Иван" required id="id"><br>
+    Отчество<input type="text" name="second_name" placeholder="Иванович" required id="id"><br>
+    Дата рождения<input type="date" name="dob" placeholder="Выберите дату"required id="id"><br>
+    <button type="submit">Создать пользователя</button>
+
+    <div id="result"></div>
+
+    <a href="/" class="return-button" >На главную</a>
+  </form>
+</body>
+</html>

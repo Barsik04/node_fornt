@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Проверить RFID метку</title>
+  <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+  <h1>Проверить RFID метку</h1>
+  <% if (typeof result !== 'undefined') { %>
+    <% if (result) { %>
+      <p class="special-output-good">Доступ разрешен</p>
+    <% } else { %>
+      <p class="special-output-bad">Доступ запрещен</p>
+    <% } %>
+  <% } %>
+  <form action="/send-get-request" method="GET" class = "special-form">
+    <input type="text" name="value" placeholder="RFID id" class="special-input" required width = 20px><br>
+    <button type="submit">Проверить RFID метку</button>
+    <a href="/" class="return-button" >На главную</a>
+  </form>
+</body>
+</html>
